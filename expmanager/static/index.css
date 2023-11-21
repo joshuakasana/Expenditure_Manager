@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#h_main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh; /* Adjust height based on your design */
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+
+}
+
+.h_org-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+}
+
+.h_org-theme {
+    font-size: 18px;
+    font-style: italic;
+    color: yellowgreen;
+    margin-bottom: 20px; /* Adjust margin as needed */
+}
+
+.h_manage_btn {
+    width: 150px; /* Adjust width as needed */
+    padding: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.navbar {
+    background-color: transparent !important;
+}
+
+
+
+
+#footer {
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='update.css') }}">
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>Expenditure Manager</title>
+    {% endif %}
+    
+    
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+          <div class="container">
+            <div class="collapse navbar-collapse" id="navbarToggle">
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="{{ url_for('index') }}">Home</a>
+                <a class="nav-item nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a class="nav-item nav-link" href="{{ url_for('record') }}">Record</a>
+                <a class="nav-item nav-link" href="{{ url_for('update') }}">Update</a>
+              </div>
+              <!-- Navbar Right Side -->
+              <div class="navbar-nav">
+                {% if current_user.is_authenticated %}
+                  <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                  <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                  <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </nav>
+    </header>
+    <section>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <h2 class="p-title">Update Expenditure</h2>
+      <div class="expenses">
+        <h2>All Expenses</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Expense Type</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          <!-- Replace the sample data below with your actual data -->
+            <tr>
+              <td>Food</td>
+              <td>$50</td>
+              <td>2023-11-01</td>
+              <td>
+                  <button onclick="openUpdateForm(1)">Update</button>
+                  <button onclick="confirmDelete(1)">Delete</button>
+              </td>
+            </tr>
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+
+        <div id="updateForm" style="display: none;">
+            <h2>Update Expense</h2>
+            <form>
+                <label for="expenseType">Expense Type:</label>
+                <input type="text" id="expenseType" name="expenseType" required>
+
+                <label for="amount">Amount:</label>
+                <input type="text" id="amount" name="amount" required>
+
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+
+                <button type="submit">Update Expense</button>
+            </form>
+        </div>
+    </div>
+    </section>
+
+    <script>
+      function openUpdateForm(expenseId) {
+            // Replace this array with your actual data source
+            const expenses = [
+                { id: 1, type: 'Food', amount: '$50', date: '2023-11-01' },
+                { id: 2, type: 'Travel', amount: '$100', date: '2023-11-05' },
+            ];
+
+            const selectedExpense = expenses.find(expense => expense.id === expenseId);
+
+            if (selectedExpense) {
+                document.getElementById("expenseType").value = selectedExpense.type;
+                document.getElementById("amount").value = selectedExpense.amount;
+                document.getElementById("date").value = selectedExpense.date;
+            }
+
+            document.getElementById("updateForm").style.display = "block";
+        }
+
+        function confirmDelete(expenseId) {
+            const confirmDelete = confirm("Are you sure you want to delete this expense?");
+            if (confirmDelete) {
+                // Implement your logic to delete the expense
+                console.log(`Expense with ID ${expenseId} deleted`);
+            }
+        }
+    </script>
+</body>
+
+</html>
+
