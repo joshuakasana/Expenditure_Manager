@@ -67,11 +67,11 @@
             </tr>
           </thead>
           <tbody>
-            {% for  item in records %}
+            {% for  item in items %}
               <tr>
                 <td>{{ item.expense_type }}</td>
                 <td>{{ item.amount }}</td>
-                <td>{{ item.date }}</td>
+                <td>{{ item.date.strftime('%Y-%m-%d') }}</td>
                 <td>
                   <button onclick="openUpdateForm(1)">Update</button>
                   <button onclick="confirmDelete(1)">Delete</button>

@@ -110,8 +110,8 @@ def update():
    if current_user.role != 'Advanced':
         flash(f'You do not have access to update records', 'danger')
         return redirect(url_for('dashboard'))
-   
-   return render_template('update.html')
+   items = Expense.query.all()
+   return render_template('update.html', items=items)
 
 
 
