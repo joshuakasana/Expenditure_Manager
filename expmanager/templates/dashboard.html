@@ -49,11 +49,12 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
-                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
-              {% else %}
-                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
-              {% endif %}
+                    <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
+                    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                    <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                {% endif %}
             </div>
           </div>
         </div>
@@ -72,21 +73,24 @@
     <div class="dashboard">
         <div class="card">
           <h2>Total Expenditures</h2>
-          <p>$10,000</p>
+          <p>${{ total_expenditure }}</p>
         </div>
   
         <div class="card">
           <h2>Monthly Expenditures</h2>
-          <p>$2,500</p>
+          <p>${{ monthly_expenses }}</p>
         </div>
   
         <div class="card">
           <h2>Categories</h2>
           <ul>
-            <li>Food: $500</li>
-            <li>Travel: $300</li>
-            <li>Utilities: $200</li>
-            <!-- Add more categories as needed -->
+            {% for expense_type, total_amount in total_expenses_by_type.items() %}
+              <li>{{ expense_type }}: ${{ total_amount }}</li>
+            {% endfor %}
+
+            <!-- {% for item in items %} -->
+              <!-- <li>{{ item.expense_type }}: ${{ item.amount }}</li> -->
+            <!-- {% endfor %} -->
           </ul>
         </div>
       </div>

@@ -33,10 +33,11 @@
               <!-- Navbar Right Side -->
               <div class="navbar-nav">
                 {% if current_user.is_authenticated %}
-                  <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
+                    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                 {% else %}
-                  <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                  <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                    <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                    <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
                 {% endif %}
               </div>
             </div>
@@ -66,16 +67,19 @@
             </tr>
           </thead>
           <tbody>
-          <!-- Replace the sample data below with your actual data -->
-            <tr>
-              <td>Food</td>
-              <td>$50</td>
-              <td>2023-11-01</td>
-              <td>
+            {% for  item in records %}
+              <tr>
+                <td>{{ item.expense_type }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.date }}</td>
+                <td>
                   <button onclick="openUpdateForm(1)">Update</button>
                   <button onclick="confirmDelete(1)">Delete</button>
-              </td>
-            </tr>
+                </td>
+              </tr>
+            {% endfor %}
+          <!-- Replace the sample data below with your actual data -->
+
             <!-- Add more rows as needed -->
           </tbody>
         </table>
