@@ -21,6 +21,7 @@ class User(db.Model, UserMixin):
     password_history = db.Column(db.String(128), nullable=True)
     last_password_change = db.Column(db.DateTime, nullable=True)
     failed_login_attempts = db.Column(db.Integer, default=0)
+    # is_verified = db.Column(db.Boolean, default=False)
     expenses = db.relationship('Expense', backref='author', lazy=True)
     
     def set_password(self, new_password):
@@ -62,6 +63,10 @@ class Expense(db.Model, UserMixin):
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    def get_username(self):
+        user = User.query.get(self.user_id)
+        return user.username if user else None
+    
     @staticmethod
     def get_total_expenditure():
         return db.session.query(func.sum(Expense.amount)).scalar()

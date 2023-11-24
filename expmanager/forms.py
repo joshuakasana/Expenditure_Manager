@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, DateField, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, DateField, ValidationError, validators
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
 from expmanager import bcrypt
 from expmanager.models import User, AuthPin
@@ -74,11 +74,7 @@ class LoginForm(FlaskForm):
                 days_since_last_change = (datetime.now() - user.last_password_change).days
                 if days_since_last_change >= 90:
                     raise ValidationError('Password expired. Please reset your password.')
-
-            # Implement password history to prevent reuse of last 10 passwords
-            if user.check_password_history(password.data):
-                raise ValidationError('You cannot reuse one of your last 10 passwords.')
-
+                
             # Simulate authentication logic (you should replace this with your actual authentication logic)
             # For demonstration purposes, assume the correct password is 'password123'
             if not bcrypt.check_password_hash(user.password, password.data):
@@ -93,25 +89,17 @@ class LoginForm(FlaskForm):
                 user.save()  # Save the updated user information
 
         else:
-            raise ValidationError('Invalid username.')
+            raise ValidationError('Invalid username or password.')
 
 
 class RecordExpenditureForm(FlaskForm):
-    expense_type = SelectField(u'Expense Type', choices=[('Food', 'Food'), ('Travels', 'Transport'), ('Medicine', 'Medicine')]) #(value, label)
+    expense_type = SelectField(u'Expense Type', 
+                               choices=[('Food', 'Food'), ('Travels', 'Transport'), ('Medicine', 'Medicine')]) #(value, label)
     amount = IntegerField('Amount',
                           validators=[DataRequired()])
     date = DateField('Date',
                      validators=[DataRequired()])
-    submit = SubmitField('Record')
-
-# class UpdateExpenditureForm(FlaskForm):
-#     expense_type = StringField('Expense Type',
-#                                validators=[DataRequired()])
-#     amount = IntegerField('Amount',
-#                           validators=[DataRequired()])
-#     date = DateField('Date',
-#                      validators=[DataRequired()])
-    
+    submit = SubmitField('Record')    
 
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',
@@ -144,3 +132,27 @@ class ChangePasswordForm(FlaskForm):
            not any(char.isupper() for char in new_password.data) or \
            not (10 <= len(new_password.data) <= 15):
             raise ValidationError('Password must be a mix of alpha-numeric characters, contain at least one uppercase letter, and be between 10 and 15 characters.')
+
+# class TokenForm(FlaskForm):
+#     token = StringField('Token', validators=[validators.InputRequired()])
+#     submit = SubmitField('Submit')
+
+# class ForgetPasswordForm(FlaskForm):
+#     current_email = StringField('Current Email', validators=[validators.InputRequired(), validators.Email()])
+#     new_password = PasswordField('New Password', validators=[DataRequired() ])
+#     confirm_new_password = PasswordField('Confirm New Password', validators=[
+#         validators.InputRequired(),
+#         validators.EqualTo('new_password', message='Passwords must match')
+#     ])
+#     submit = SubmitField('Change Password')
+
+#     def validate_new_password(self, new_password):
+#         if not any(char.isalpha() for char in new_password.data) or \
+#            not any(char.isdigit() for char in new_password.data) or \
+#            not any(char.isupper() for char in new_password.data) or \
+#            not (10 <= len(new_password.data) <= 15):
+#             raise ValidationError('Password must be a mix of alpha-numeric characters, contain at least one uppercase letter, and be between 10 and 15 characters.')
+
+# class ForgetPasswordForm(FlaskForm):
+#     current_email = StringField('Current Email', validators=[validators.InputRequired(), validators.Email()])
+#     submit = SubmitField('Submit')
